@@ -1,4 +1,4 @@
-module github.com/greg2010/wireguard-gateway-operator
+module github.com/tripod-networks/wireguard-gateway-operator
 
 go 1.26.1
 

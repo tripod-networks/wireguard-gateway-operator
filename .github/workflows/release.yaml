@@ -67,7 +67,7 @@ jobs:
       - uses: imjasonh/setup-crane@v0.4
       - run: |
           SHORT="${GITHUB_SHA:0:7}"
-          SRC="ghcr.io/greg2010/wireguard-gateway-operator/${{ matrix.image }}:sha-${SHORT}"
+          SRC="ghcr.io/${{ github.repository }}/${{ matrix.image }}:sha-${SHORT}"
           crane tag "$SRC" "${{ needs.validate.outputs.version }}"
           crane tag "$SRC" latest
 
@@ -79,10 +79,10 @@ jobs:
       - uses: azure/setup-helm@v4
       - run: |
           VERSION="${{ needs.validate.outputs.version }}"
-          VERSION="$VERSION" yq -i '.operator.image.repository = "ghcr.io/greg2010/wireguard-gateway-operator/operator" | .operator.image.tag = strenv(VERSION) | .link.image.repository = "ghcr.io/greg2010/wireguard-gateway-operator/link" | .link.image.tag = strenv(VERSION)' k8s/charts/wireguard-gateway-operator/values.yaml
+          VERSION="$VERSION" yq -i '.operator.image.repository = "ghcr.io/${{ github.repository }}/operator" | .operator.image.tag = strenv(VERSION) | .link.image.repository = "ghcr.io/${{ github.repository }}/link" | .link.image.tag = strenv(VERSION)' k8s/charts/wireguard-gateway-operator/values.yaml
           helm package k8s/charts/wireguard-gateway-operator --version "$VERSION" --app-version "$VERSION"
           helm registry login ghcr.io -u ${{ github.actor }} --password-stdin <<< "${{ secrets.GITHUB_TOKEN }}"
-          helm push "wireguard-gateway-operator-${VERSION}.tgz" oci://ghcr.io/greg2010/wireguard-gateway-operator/charts
+          helm push "wireguard-gateway-operator-${VERSION}.tgz" oci://ghcr.io/${{ github.repository }}/charts
       - uses: actions/upload-artifact@v4
         with:
           name: chart

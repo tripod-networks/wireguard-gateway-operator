@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/greg2010/wireguard-gateway-operator/test/harness/netns"
 	"github.com/testcontainers/testcontainers-go"
+	"github.com/tripod-networks/wireguard-gateway-operator/test/harness/netns"
 )
 
 // TestGatewayNftLoadsIntoKernel loads the ruleset into a real nft so a syntax

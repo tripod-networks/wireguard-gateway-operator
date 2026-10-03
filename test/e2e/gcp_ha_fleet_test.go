@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	e2eharness "github.com/greg2010/wireguard-gateway-operator/test/harness/e2e"
-	"github.com/greg2010/wireguard-gateway-operator/test/harness/shared"
+	e2eharness "github.com/tripod-networks/wireguard-gateway-operator/test/harness/e2e"
+	"github.com/tripod-networks/wireguard-gateway-operator/test/harness/shared"
 )
 
 func runGcloud(ctx context.Context, t *testing.T, suite *e2eharness.Suite, args ...string) string {

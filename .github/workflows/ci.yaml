@@ -121,7 +121,7 @@ jobs:
       - id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/greg2010/wireguard-gateway-operator/${{ matrix.image }}
+          images: ghcr.io/${{ github.repository }}/${{ matrix.image }}
           tags: |
             type=sha,prefix=sha-
             type=ref,event=branch

@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/link"
-	"github.com/greg2010/wireguard-gateway-operator/test/harness/netns"
 	"github.com/testcontainers/testcontainers-go"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/link"
+	"github.com/tripod-networks/wireguard-gateway-operator/test/harness/netns"
 )
 
 func TestNftablesApplyIsSelfReplacing(t *testing.T) {

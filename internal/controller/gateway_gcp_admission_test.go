@@ -23,8 +23,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/link"
-	wgnetv1alpha1 "github.com/greg2010/wireguard-gateway-operator/pkg/api/v1alpha1"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/link"
+	wgnetv1alpha1 "github.com/tripod-networks/wireguard-gateway-operator/pkg/api/v1alpha1"
 )
 
 // gcpLBGateway builds a load-balanced Gateway fixture: replicas 2, two zones inside region,

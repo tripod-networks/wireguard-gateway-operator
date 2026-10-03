@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	e2eharness "github.com/greg2010/wireguard-gateway-operator/test/harness/e2e"
+	e2eharness "github.com/tripod-networks/wireguard-gateway-operator/test/harness/e2e"
 )
 
 // instanceTemplates returns the gateway's instance templates, sorted. Their names are

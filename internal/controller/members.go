@@ -13,9 +13,9 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/gcpdiscovery"
-	"github.com/greg2010/wireguard-gateway-operator/internal/gcpmembers"
-	wgnetv1alpha1 "github.com/greg2010/wireguard-gateway-operator/pkg/api/v1alpha1"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/gcpdiscovery"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/gcpmembers"
+	wgnetv1alpha1 "github.com/tripod-networks/wireguard-gateway-operator/pkg/api/v1alpha1"
 )
 
 // reasonMemberCleanupBlocked is an event-only reason: a blocked departure is reported on the

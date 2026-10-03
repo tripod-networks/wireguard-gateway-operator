@@ -15,13 +15,13 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/gcpdiscovery"
-	gcpdiscoverymocks "github.com/greg2010/wireguard-gateway-operator/internal/gcpdiscovery/mocks"
-	"github.com/greg2010/wireguard-gateway-operator/internal/gcpmembers"
-	"github.com/greg2010/wireguard-gateway-operator/internal/link"
-	"github.com/greg2010/wireguard-gateway-operator/internal/wg"
-	wgnetv1alpha1 "github.com/greg2010/wireguard-gateway-operator/pkg/api/v1alpha1"
 	"github.com/stretchr/testify/mock"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/gcpdiscovery"
+	gcpdiscoverymocks "github.com/tripod-networks/wireguard-gateway-operator/internal/gcpdiscovery/mocks"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/gcpmembers"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/link"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/wg"
+	wgnetv1alpha1 "github.com/tripod-networks/wireguard-gateway-operator/pkg/api/v1alpha1"
 )
 
 // TestReconcileOverCapacityChangesNothing verifies the over-capacity branch.

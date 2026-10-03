@@ -10,8 +10,8 @@ import (
 
 	"go.uber.org/zap"
 
-	hk8s "github.com/greg2010/wireguard-gateway-operator/test/harness/k8s"
-	"github.com/greg2010/wireguard-gateway-operator/test/harness/shared"
+	hk8s "github.com/tripod-networks/wireguard-gateway-operator/test/harness/k8s"
+	"github.com/tripod-networks/wireguard-gateway-operator/test/harness/shared"
 )
 
 const (

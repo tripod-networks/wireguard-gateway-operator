@@ -29,9 +29,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/link"
-	"github.com/greg2010/wireguard-gateway-operator/internal/wg"
-	wgnetv1alpha1 "github.com/greg2010/wireguard-gateway-operator/pkg/api/v1alpha1"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/link"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/wg"
+	wgnetv1alpha1 "github.com/tripod-networks/wireguard-gateway-operator/pkg/api/v1alpha1"
 )
 
 // reconcileConfig is the operator config the controller tests reconcile with. PodNamespace is

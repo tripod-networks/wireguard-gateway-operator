@@ -16,7 +16,7 @@ import (
 	"sigs.k8s.io/kind/pkg/cluster"
 	kindcmd "sigs.k8s.io/kind/pkg/cmd"
 
-	"github.com/greg2010/wireguard-gateway-operator/test/harness/shared"
+	"github.com/tripod-networks/wireguard-gateway-operator/test/harness/shared"
 )
 
 // e2eClusterName is the kind cluster the e2e suite provisions.

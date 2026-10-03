@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	e2eharness "github.com/greg2010/wireguard-gateway-operator/test/harness/e2e"
-	hk8s "github.com/greg2010/wireguard-gateway-operator/test/harness/k8s"
-	"github.com/greg2010/wireguard-gateway-operator/test/harness/shared"
+	e2eharness "github.com/tripod-networks/wireguard-gateway-operator/test/harness/e2e"
+	hk8s "github.com/tripod-networks/wireguard-gateway-operator/test/harness/k8s"
+	"github.com/tripod-networks/wireguard-gateway-operator/test/harness/shared"
 )
 
 type tunnelOutage struct {

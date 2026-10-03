@@ -12,9 +12,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	fakeclient "sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/gcpdiscovery"
-	gcpdiscoverymocks "github.com/greg2010/wireguard-gateway-operator/internal/gcpdiscovery/mocks"
 	"github.com/stretchr/testify/mock"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/gcpdiscovery"
+	gcpdiscoverymocks "github.com/tripod-networks/wireguard-gateway-operator/internal/gcpdiscovery/mocks"
 )
 
 func fakeClientWithSecret(t *testing.T, namespace, name, key string, data []byte) client.Client {

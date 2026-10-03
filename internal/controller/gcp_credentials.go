@@ -10,7 +10,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/gcpdiscovery"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/gcpdiscovery"
 )
 
 // newGCPDiscoveryClient builds the real gcpdiscovery.Client; a package var so tests can

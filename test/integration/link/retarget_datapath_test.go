@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/link"
-	"github.com/greg2010/wireguard-gateway-operator/test/harness/netns"
 	"github.com/testcontainers/testcontainers-go"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/link"
+	"github.com/tripod-networks/wireguard-gateway-operator/test/harness/netns"
 )
 
 // A three-netns topology forwards traffic through wg0 to a separate cluster netns

@@ -19,10 +19,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/config"
-	"github.com/greg2010/wireguard-gateway-operator/internal/controller"
-	"github.com/greg2010/wireguard-gateway-operator/internal/logger"
-	wgnetv1alpha1 "github.com/greg2010/wireguard-gateway-operator/pkg/api/v1alpha1"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/config"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/controller"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/logger"
+	wgnetv1alpha1 "github.com/tripod-networks/wireguard-gateway-operator/pkg/api/v1alpha1"
 )
 
 // leaderElectionID is the stable lock name the operator's leader election uses.

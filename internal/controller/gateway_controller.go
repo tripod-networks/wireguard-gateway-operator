@@ -36,9 +36,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/gcpmembers"
-	"github.com/greg2010/wireguard-gateway-operator/internal/link"
-	wgnetv1alpha1 "github.com/greg2010/wireguard-gateway-operator/pkg/api/v1alpha1"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/gcpmembers"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/link"
+	wgnetv1alpha1 "github.com/tripod-networks/wireguard-gateway-operator/pkg/api/v1alpha1"
 )
 
 // gatewayFinalizer holds Gateway deletion until Crossplane has drained the cloud

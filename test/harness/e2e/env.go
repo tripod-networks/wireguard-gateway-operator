@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/greg2010/wireguard-gateway-operator/test/harness/shared"
+	"github.com/tripod-networks/wireguard-gateway-operator/test/harness/shared"
 )
 
 // Env holds the GCP configuration the suite reads from the process
@@ -28,8 +28,7 @@ type Env struct {
 	// gcp-creds.
 	CredsSecret string
 	// Keep skips all teardown so the cluster and GCP VM survive for debugging. Unlike
-	// GATEWAY_E2E_PRESERVE it does not gate on failure, so it leaks the VM until drained
-	// by hand; never use in CI.
+	// GATEWAY_E2E_PRESERVE it ignores failure and leaks the VM until drained by hand; not for CI.
 	Keep bool
 }
 

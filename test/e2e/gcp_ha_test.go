@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	e2eharness "github.com/greg2010/wireguard-gateway-operator/test/harness/e2e"
+	e2eharness "github.com/tripod-networks/wireguard-gateway-operator/test/harness/e2e"
 )
 
 // TestGCPHA verifies a multi-member GCP gateway repairs, rolls out, and retains its identity.

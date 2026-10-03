@@ -30,10 +30,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/interceptor"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/link"
-	"github.com/greg2010/wireguard-gateway-operator/internal/wg"
-	wgnetv1alpha1 "github.com/greg2010/wireguard-gateway-operator/pkg/api/v1alpha1"
-	hk8s "github.com/greg2010/wireguard-gateway-operator/test/harness/k8s"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/link"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/wg"
+	wgnetv1alpha1 "github.com/tripod-networks/wireguard-gateway-operator/pkg/api/v1alpha1"
+	hk8s "github.com/tripod-networks/wireguard-gateway-operator/test/harness/k8s"
 )
 
 // clusterBackends is the shape classifyForwards produces for a Cluster-mode Gateway whose

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	wgnetv1alpha1 "github.com/greg2010/wireguard-gateway-operator/pkg/api/v1alpha1"
+	wgnetv1alpha1 "github.com/tripod-networks/wireguard-gateway-operator/pkg/api/v1alpha1"
 )
 
 func TestEffectiveZones(t *testing.T) {

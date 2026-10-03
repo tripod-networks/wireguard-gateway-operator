@@ -1,6 +1,6 @@
 # wireguard-gateway-operator
 
-[![CI](https://github.com/greg2010/wireguard-gateway-operator/actions/workflows/ci.yaml/badge.svg)](https://github.com/greg2010/wireguard-gateway-operator/actions/workflows/ci.yaml) [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE) ![Go](https://img.shields.io/github/go-mod/go-version/greg2010/wireguard-gateway-operator)
+[![CI](https://github.com/tripod-networks/wireguard-gateway-operator/actions/workflows/ci.yaml/badge.svg)](https://github.com/tripod-networks/wireguard-gateway-operator/actions/workflows/ci.yaml) [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE) ![Go](https://img.shields.io/github/go-mod/go-version/tripod-networks/wireguard-gateway-operator)
 
 A Kubernetes operator that runs WireGuard gateways on cloud VMs to give a private
 or NAT'd cluster public ingress without exposing a cloud LoadBalancer of its own.
@@ -269,8 +269,8 @@ listing missed. The env vars are `GATEWAY_GCP_DISCOVERY_INTERVAL` and
 
 ```sh
 helm install wireguard-gateway-operator \
-  oci://ghcr.io/greg2010/wireguard-gateway-operator/charts/wireguard-gateway-operator \
-  --version 0.8.1 \
+  oci://ghcr.io/tripod-networks/wireguard-gateway-operator/charts/wireguard-gateway-operator \
+  --version 0.10.0 \
   -n wireguard-gateway-operator --create-namespace
 ```
 

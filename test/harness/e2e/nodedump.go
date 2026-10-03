@@ -12,8 +12,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/link"
-	hk8s "github.com/greg2010/wireguard-gateway-operator/test/harness/k8s"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/link"
+	hk8s "github.com/tripod-networks/wireguard-gateway-operator/test/harness/k8s"
 )
 
 // nodeCaptureMaxBytes bounds one captured command's output. The node's main route

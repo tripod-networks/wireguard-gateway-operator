@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	e2eharness "github.com/greg2010/wireguard-gateway-operator/test/harness/e2e"
+	e2eharness "github.com/tripod-networks/wireguard-gateway-operator/test/harness/e2e"
 )
 
 // dataPathDeadline covers only the nftables DNAT and route convergence left after

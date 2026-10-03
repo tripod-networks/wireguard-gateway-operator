@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	e2eharness "github.com/greg2010/wireguard-gateway-operator/test/harness/e2e"
+	e2eharness "github.com/tripod-networks/wireguard-gateway-operator/test/harness/e2e"
 )
 
 // sharedNetworkDrainTimeout: run 35412850047 on 2026-09-19 needed longer than the previous

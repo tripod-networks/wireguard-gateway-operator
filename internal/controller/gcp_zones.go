@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 
-	wgnetv1alpha1 "github.com/greg2010/wireguard-gateway-operator/pkg/api/v1alpha1"
+	wgnetv1alpha1 "github.com/tripod-networks/wireguard-gateway-operator/pkg/api/v1alpha1"
 )
 
 // effectiveZones returns spec.gcp.zones, or [spec.gcp.zone] when absent.

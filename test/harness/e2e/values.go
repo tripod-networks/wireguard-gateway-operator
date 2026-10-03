@@ -7,7 +7,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/greg2010/wireguard-gateway-operator/test/harness/k8s"
+	"github.com/tripod-networks/wireguard-gateway-operator/test/harness/k8s"
 )
 
 // operatorValues is the e2e overlay layered over the chart's values.yaml: images and

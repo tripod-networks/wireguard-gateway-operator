@@ -4,9 +4,9 @@ description: Kubernetes operator that provisions per-Gateway GCP WireGuard gatew
 type: application
 version: 0.1.0-dev
 appVersion: "0.0.0-dev"
-home: https://github.com/greg2010/wireguard-gateway-operator
+home: https://github.com/tripod-networks/wireguard-gateway-operator
 sources:
-  - https://github.com/greg2010/wireguard-gateway-operator
+  - https://github.com/tripod-networks/wireguard-gateway-operator
 keywords:
   - wireguard
   - crossplane
@@ -14,4 +14,4 @@ keywords:
   - gateway
   - ingress
 maintainers:
-  - name: greg2010
+  - name: tripod-networks

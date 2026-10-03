@@ -7,7 +7,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/greg2010/wireguard-gateway-operator/test/harness/shared"
+	"github.com/tripod-networks/wireguard-gateway-operator/test/harness/shared"
 )
 
 // ImageRef is a built image's repository and tag, split for the chart's

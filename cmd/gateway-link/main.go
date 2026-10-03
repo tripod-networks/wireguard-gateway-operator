@@ -10,9 +10,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/config"
-	"github.com/greg2010/wireguard-gateway-operator/internal/link"
-	"github.com/greg2010/wireguard-gateway-operator/internal/logger"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/config"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/link"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/logger"
 )
 
 func main() {

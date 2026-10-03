@@ -12,15 +12,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/greg2010/wireguard-gateway-operator/test/harness/shared"
+	"github.com/tripod-networks/wireguard-gateway-operator/test/harness/shared"
 
 	"golang.org/x/sync/errgroup"
 	policyv1 "k8s.io/api/policy/v1"
 	utilexec "k8s.io/client-go/util/exec"
 
-	"github.com/greg2010/wireguard-gateway-operator/internal/link"
-	e2eharness "github.com/greg2010/wireguard-gateway-operator/test/harness/e2e"
-	hk8s "github.com/greg2010/wireguard-gateway-operator/test/harness/k8s"
+	"github.com/tripod-networks/wireguard-gateway-operator/internal/link"
+	e2eharness "github.com/tripod-networks/wireguard-gateway-operator/test/harness/e2e"
+	hk8s "github.com/tripod-networks/wireguard-gateway-operator/test/harness/k8s"
 )
 
 // Ready=False reasons the lifecycle subtests assert on, mirroring the operator's
