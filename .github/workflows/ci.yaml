@@ -85,7 +85,7 @@ jobs:
         with:
           version: v0.32.0
           install_only: true
-      - run: sudo modprobe wireguard
+      - run: test -d /sys/module/wireguard || sudo modprobe wireguard
       - run: printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-creds.json"
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}

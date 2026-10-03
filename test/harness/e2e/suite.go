@@ -169,16 +169,18 @@ func Setup(ctx context.Context) (*Suite, error) {
 		if err := cluster.Ensure(ctx); err != nil {
 			return suite, fmt.Errorf("kind ensure: %w", err)
 		}
-		// kind nodes share the host kernel, and the link's kernel-mode WireGuard interface
-		// needs the module loaded on whichever node the link pod lands on.
+		// kind nodes share the host kernel; the link's kernel-mode interface needs WireGuard
+		// there, loaded as a module or built in.
 		nodes, err := cluster.Nodes()
 		if err != nil {
 			return suite, err
 		}
 		for _, node := range nodes {
 			log.Info("preparing kind node for the link", zap.String("node", node))
-			if out, err := hk8s.NodeExec(ctx, node, "modprobe", "wireguard"); err != nil {
-				return suite, fmt.Errorf("load wireguard module on kind node %s: %w\n%s", node, err, out)
+			if out, err := hk8s.NodeExec(ctx, node,
+				"sh", "-c", "test -d /sys/module/wireguard || modprobe wireguard",
+			); err != nil {
+				return suite, fmt.Errorf("wireguard on kind node %s: %w\n%s", node, err, out)
 			}
 			// The link lowers only conf.<iface>.rp_filter and reports RPFilterStrict when
 			// conf.all.rp_filter is 1, so the node's administrator must lower conf.all.
