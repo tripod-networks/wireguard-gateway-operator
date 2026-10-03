@@ -1,107 +1,159 @@
 name: Release
 
 on:
-  push:
-    tags: ["v*.*.*"]
+    push:
+        tags:
+            - "v*.*.*"
 
+# validate reads the CI run through the Actions API; github-release uploads the chart.
 permissions:
-  contents: write
-  packages: write
-  actions: read
+    actions: read
+    contents: write
+    packages: write
 
 jobs:
-  validate:
-    runs-on: blacksmith-2vcpu-ubuntu-2404
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-    env:
-      GH_TOKEN: ${{ github.token }}
-    steps:
-      - uses: useblacksmith/checkout@v1
-        with:
-          fetch-depth: 0
-      - id: version
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          if ! printf '%s' "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "tag $GITHUB_REF_NAME is not a semver vX.Y.Z release" >&2
-            exit 1
-          fi
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-      - run: |
-          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
-            echo "tagged commit $GITHUB_SHA is not an ancestor of origin/main" >&2
-            exit 1
-          fi
-      - run: |
-          run_id="$(gh run list --workflow=ci.yaml --commit "$GITHUB_SHA" --json databaseId --jq '.[0].databaseId')"
-          if [ -z "$run_id" ]; then
-            echo "no ci.yaml run found for $GITHUB_SHA" >&2
-            exit 1
-          fi
+    validate:
+        name: Validate Release
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+        outputs:
+            version: ${{ steps.version.outputs.version }}
+        steps:
+            - name: Checkout
+              uses: useblacksmith/checkout@v1
+              with:
+                  fetch-depth: 0
 
-          failures="$(gh run view "$run_id" --json jobs --jq '[.jobs[] | select(.name != "e2e") | select(.conclusion != "success")] | map("\(.name)=\(.conclusion // "null")") | join(", ")')"
-          if [ -n "$failures" ]; then
-            echo "ci.yaml run $run_id has non-successful jobs (excluding e2e): $failures" >&2
-            exit 1
-          fi
+            - name: Extract version from tag
+              id: version
+              run: |
+                  VERSION="${GITHUB_REF_NAME#v}"
+                  echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-          build_push_count="$(gh run view "$run_id" --json jobs --jq '[.jobs[] | select(.name | startswith("build-push"))] | length')"
-          if [ "$build_push_count" -eq 0 ]; then
-            echo "ci.yaml run $run_id has no build-push job" >&2
-            exit 1
-          fi
+            - name: Validate semver format
+              run: |
+                  if ! printf '%s' "${{ steps.version.outputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+                    echo "tag $GITHUB_REF_NAME is not a semver vX.Y.Z release" >&2
+                    exit 1
+                  fi
 
-  retag-images:
-    needs: validate
-    runs-on: blacksmith-2vcpu-ubuntu-2404
-    strategy:
-      matrix:
-        image: [operator, link]
-    steps:
-      - uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: imjasonh/setup-crane@v0.4
-      - run: |
-          SHORT="${GITHUB_SHA:0:7}"
-          SRC="ghcr.io/${{ github.repository }}/${{ matrix.image }}:sha-${SHORT}"
-          crane tag "$SRC" "${{ needs.validate.outputs.version }}"
-          crane tag "$SRC" latest
+            - name: Verify tag is on main branch
+              run: |
+                  git fetch origin main
+                  if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+                    echo "tagged commit $GITHUB_SHA is not an ancestor of origin/main" >&2
+                    exit 1
+                  fi
 
-  package-chart:
-    needs: validate
-    runs-on: blacksmith-2vcpu-ubuntu-2404
-    steps:
-      - uses: useblacksmith/checkout@v1
-      - uses: azure/setup-helm@v4
-      - run: |
-          VERSION="${{ needs.validate.outputs.version }}"
-          VERSION="$VERSION" yq -i '.operator.image.repository = "ghcr.io/${{ github.repository }}/operator" | .operator.image.tag = strenv(VERSION) | .link.image.repository = "ghcr.io/${{ github.repository }}/link" | .link.image.tag = strenv(VERSION)' k8s/charts/wireguard-gateway-operator/values.yaml
-          helm package k8s/charts/wireguard-gateway-operator --version "$VERSION" --app-version "$VERSION"
-          helm registry login ghcr.io -u ${{ github.actor }} --password-stdin <<< "${{ secrets.GITHUB_TOKEN }}"
-          helm push "wireguard-gateway-operator-${VERSION}.tgz" oci://ghcr.io/${{ github.repository }}/charts
-      - uses: actions/upload-artifact@v4
-        with:
-          name: chart
-          path: wireguard-gateway-operator-*.tgz
-          if-no-files-found: error
+            - name: Verify the image build of this commit
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  run_id="$(gh run list --workflow=ci.yaml --commit "$GITHUB_SHA" --json databaseId --jq '.[0].databaseId')"
+                  if [ -z "$run_id" ]; then
+                    echo "no ci.yaml run found for $GITHUB_SHA" >&2
+                    exit 1
+                  fi
 
-  github-release:
-    needs: [validate, retag-images, package-chart]
-    runs-on: blacksmith-2vcpu-ubuntu-2404
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: chart
-      - name: Create GitHub release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release create "$GITHUB_REF_NAME" \
-            --repo "$GITHUB_REPOSITORY" \
-            --title "$GITHUB_REF_NAME" \
-            --generate-notes \
-            ./*.tgz
+                  failures="$(gh run view "$run_id" --json jobs --jq '[.jobs[] | select(.name | startswith("Build and Push Images")) | select(.conclusion != "success")] | map("\(.name)=\(.conclusion // "null")") | join(", ")')"
+                  if [ -n "$failures" ]; then
+                    echo "ci.yaml run $run_id has non-successful image build jobs: $failures" >&2
+                    exit 1
+                  fi
+
+                  build_push_count="$(gh run view "$run_id" --json jobs --jq '[.jobs[] | select(.name | startswith("Build and Push Images"))] | length')"
+                  if [ "$build_push_count" -lt 2 ]; then
+                    echo "ci.yaml run $run_id has $build_push_count Build and Push Images jobs, expected at least 2" >&2
+                    exit 1
+                  fi
+
+    retag-images:
+        name: Retag Images
+        needs: [validate]
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+        strategy:
+            matrix:
+                image: [operator, link]
+        steps:
+            - name: Login to GHCR
+              uses: docker/login-action@v4
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - uses: imjasonh/setup-crane@v0.4
+
+            - name: Tag the commit image with the version and latest
+              run: |
+                  SHORT="${GITHUB_SHA:0:7}"
+                  SRC="ghcr.io/${{ github.repository }}/${{ matrix.image }}:sha-${SHORT}"
+                  crane tag "$SRC" "${{ needs.validate.outputs.version }}"
+                  crane tag "$SRC" latest
+
+    package-chart:
+        name: Package and Push Helm Chart
+        needs: [validate]
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+        steps:
+            - name: Checkout
+              uses: useblacksmith/checkout@v1
+
+            - name: Install Helm
+              uses: azure/setup-helm@v5
+
+            - name: Login to GHCR
+              uses: docker/login-action@v4
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Install yq
+              uses: yokawasa/action-setup-kube-tools@v0.14.0
+              with:
+                  setup-tools: |
+                      yq
+
+            - name: Pin the image coordinates into values.yaml
+              run: |
+                  VERSION="${{ needs.validate.outputs.version }}"
+                  VERSION="$VERSION" yq -i '.operator.image.repository = "ghcr.io/${{ github.repository }}/operator" | .operator.image.tag = strenv(VERSION) | .link.image.repository = "ghcr.io/${{ github.repository }}/link" | .link.image.tag = strenv(VERSION)' k8s/charts/wireguard-gateway-operator/values.yaml
+
+            - name: Verify the pinned chart renders
+              run: helm template wireguard-gateway-operator k8s/charts/wireguard-gateway-operator >/dev/null
+
+            - name: Package Helm chart
+              run: |
+                  VERSION="${{ needs.validate.outputs.version }}"
+                  helm package k8s/charts/wireguard-gateway-operator --version "$VERSION" --app-version "$VERSION"
+
+            - name: Push Helm chart to GHCR
+              run: |
+                  VERSION="${{ needs.validate.outputs.version }}"
+                  helm push "wireguard-gateway-operator-${VERSION}.tgz" oci://ghcr.io/${{ github.repository }}/charts
+
+            - name: Upload the chart
+              uses: actions/upload-artifact@v7
+              with:
+                  name: chart
+                  path: wireguard-gateway-operator-*.tgz
+                  if-no-files-found: error
+
+    github-release:
+        name: Create GitHub Release
+        needs: [validate, retag-images, package-chart]
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+        steps:
+            - uses: actions/download-artifact@v8
+              with:
+                  name: chart
+
+            - name: Create GitHub release
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: |
+                  gh release create "$GITHUB_REF_NAME" \
+                    --repo "$GITHUB_REPOSITORY" \
+                    --title "$GITHUB_REF_NAME" \
+                    --generate-notes \
+                    ./*.tgz
