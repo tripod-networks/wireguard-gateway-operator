@@ -89,6 +89,11 @@ jobs:
             - name: Ensure WireGuard in the runner kernel
               run: test -d /sys/module/wireguard || sudo modprobe wireguard
 
+            - name: Allow unprivileged ICMP ping
+              run: |
+                  sudo sysctl -w net.ipv4.ping_group_range="0 2147483647"
+                  ping -c 1 -W 1 127.0.0.1
+
             - name: Write the GCP credentials file
               run: printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-creds.json"
               env:
