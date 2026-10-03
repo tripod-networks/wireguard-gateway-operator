@@ -11,13 +11,13 @@ permissions:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     outputs:
       version: ${{ steps.version.outputs.version }}
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: useblacksmith/checkout@v1
         with:
           fetch-depth: 0
       - id: version
@@ -54,7 +54,7 @@ jobs:
 
   retag-images:
     needs: validate
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     strategy:
       matrix:
         image: [operator, link]
@@ -73,9 +73,9 @@ jobs:
 
   package-chart:
     needs: validate
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
-      - uses: actions/checkout@v6
+      - uses: useblacksmith/checkout@v1
       - uses: azure/setup-helm@v4
       - run: |
           VERSION="${{ needs.validate.outputs.version }}"
@@ -91,7 +91,7 @@ jobs:
 
   github-release:
     needs: [validate, retag-images, package-chart]
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - uses: actions/download-artifact@v4
         with:
