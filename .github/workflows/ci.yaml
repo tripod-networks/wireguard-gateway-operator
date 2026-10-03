@@ -148,6 +148,8 @@ jobs:
             - uses: docker/setup-qemu-action@v3
 
             - uses: useblacksmith/setup-docker-builder@v2
+              with:
+                  cache-key: ${{ matrix.image }}
 
             - name: Login to GHCR
               uses: docker/login-action@v4
